@@ -1,21 +1,51 @@
+	#include <iostream>
+	using namespace std;	
 	#include "StudentList.h"
-
 	// Define a constructor to initialize the list. The list starts with no Students
-    StudentList::StudentList() {}
+    StudentList::StudentList(){
+		head = nullptr;
+		tail = nullptr;
+		numStudents = 0;
+	}
 
 	// return the number of students currently in the list
 	int StudentList::listSize() {
-		return -1;
+		return numStudents;
 	}
 
 	//add a Node with a student to the front (head) of the list.
-	void StudentList::addFront(Student s) {}
+	void StudentList::addFront(Student s) {
+		if(head != tail){
+			Node *n = new Node(s);
+			head->prev = n;
+			head->prev->next = head;
+			head = n;
+		}
+		else{
+			Node *nn = new Node(s);
+			head = nn;
+		}
+		numStudents++;
+	}
 
 	//add a Node with a student to the back (tail) of the list.
-	void StudentList::addBack(Student s) {}
+	void StudentList::addBack(Student s) {
+		if(tail != head){
+			Node *n = new Node(s);
+			tail->next = n;
+			tail->next->prev = tail;
+			tail = n;
+		}
+		numStudents++;
+	}
 
 	//Print out the names of each student in the list.
-	void StudentList::printList() {}
+	void StudentList::printList() {
+		Node *temp = tail;
+		while(temp != head){
+			temp = temp->next;
+		}
+	}
 
 	// Remove the Node with the student at the back (tail) of the list
 	// should not fail if list is empty! Print an error message if this occurs
