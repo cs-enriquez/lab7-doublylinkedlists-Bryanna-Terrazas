@@ -9,7 +9,7 @@
 	}
 
 	// return the number of students currently in the list
-	int StudentList::listSize() {
+	int StudentList::listSize(){
 		return numStudents;
 	}
 
@@ -18,7 +18,7 @@
 		if(head != tail){
 			Node *n = new Node(s);
 			head->prev = n;
-			head->prev->next = head;
+			n->next = head;
 			head = n;
 		}
 		else{
@@ -33,21 +33,32 @@
 		if(tail != head){
 			Node *n = new Node(s);
 			tail->next = n;
-			tail->next->prev = tail;
+			n->prev = tail;
 			tail = n;
+		}
+		else{
+			Node *nn = new Node(s);
+			tail = nn;
 		}
 		numStudents++;
 	}
 
 	//Print out the names of each student in the list.
 	void StudentList::printList() {
-		Node *temp = head;
-		for(int i = 0; i < numStudents; i++){
-			cout << temp->data.name << " ";
-			temp = temp->next;
-		}
-		temp = nullptr;
-		delete temp;
+		Node *curr = head; 
+    	if(head == nullptr){
+        	cout << "Empty list!" << " ";
+   		}
+    	if(head == tail){
+        	cout << head->data.name << " ";
+    	}
+		else{
+			while(curr != nullptr){
+		    	cout << curr->data.name << " ";
+				curr = curr->next;
+			}
+    	}
+		cout << endl;
 	}
 
 	// Remove the Node with the student at the back (tail) of the list
@@ -108,15 +119,22 @@
 			cout << "Index does not exist, adding to end of list."<< endl;
 			addBack(s);
 		}
+		if(t = head){
+			n->next = t;
+			t->prev = n;
+			head = n;
+			numStudents++;
+		}
 		else{
+			
 			for(int i = 0; i < index; i++){
 				t = t->next;
 			}
-			t->prev->next = n;
-			n->prev = t->prev->next;
-			t = t->next;
-			n = t->prev;
+			n->prev = t->prev;
+			n->next = t;
 			t->prev = n;
+			n->prev->next = n;
+			
 			numStudents++;
 		}
 
@@ -126,20 +144,47 @@
 	// if no student matches, print a message 
 	// and create and return a dummy student object
 	Student StudentList::retrieveStudent(int idNum){
-		
 		Student *n;
 		n = new Student;
-		n->id = idNum;
 		Node *b = new Node(*n);
-		while(b->data.id != idNum){
-			b = b->next;
+		Node *t = head;
+		int lpId = 0;
+		if(head != nullptr){
+			n->id = idNum;
+			while(lpId < numStudents){
+				while(b->data.id != t->data.id){
+					t = t->next;
+				}
+				lpId++;
+			}
+			if(b->data.id == t->data.id){
+				return t->data;
+			}
 		}
 		return b->data;
 	}
 
 	// Remove a Node with a student from the list with a given id number
 	// If no student matches, print a message and do nothing
-	void StudentList::removeStudentById(int idNum) {}
+	void StudentList::removeStudentById(int idNum) {
+		Node *run = head;
+		Student n = retrieveStudent(idNum);
+		Node *s = new Node(n);
+		int lpId = 0;
+		while(lpId < numStudents){
+			while(s->data.id != run->data.id){
+				run = run->next;
+			}
+			lpId++;
+		}
+		if(s->data.id == run->data.id){
+			run->next = run->prev;
+			run->prev->next = run->next;
+		}
+		else{
+			cout << "Student not found" << endl;
+		}
+	}
 
 	//Change the gpa of the student with given id number to newGPA
 	void StudentList::updateGPA(int idNum, float newGPA) {}
