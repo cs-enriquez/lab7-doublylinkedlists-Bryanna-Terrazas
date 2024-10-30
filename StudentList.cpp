@@ -45,20 +45,17 @@
 
 	//Print out the names of each student in the list.
 	void StudentList::printList() {
-		Node *curr = head; 
-    	if(head == nullptr){
-        	cout << "Empty list!" << " ";
-   		}
-    	if(head == tail){
-        	cout << head->data.name << " ";
-    	}
-		else{
+		Node *curr = tail; 
+    	if(tail != nullptr){
 			while(curr != nullptr){
 		    	cout << curr->data.name << " ";
 				curr = curr->next;
-			}
-    	}
-		cout << endl;
+			}	
+			cout << endl;
+		}
+		else{
+			cout << "Empty list!" << endl;
+		}
 	}
 
 	// Remove the Node with the student at the back (tail) of the list
@@ -187,7 +184,9 @@
 	}
 
 	//Change the gpa of the student with given id number to newGPA
-	void StudentList::updateGPA(int idNum, float newGPA) {}
+	void StudentList::updateGPA(int idNum, float newGPA) {
+
+	}
 
 	//Add all students from otherList to this list.
 	//otherlist should be empty after this operation.
